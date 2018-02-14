@@ -1,5 +1,5 @@
 
-function [log2FC,FDR] = spec_dhs_launcher_diff_ratio(matrix1,matrix2):
+function [log2FC,FDR] = DESeq2(matrix1,matrix2):
 % matrix1: matrix where each line represent a sample in the condition 1
 % matrix2: matrix where each line represent a sample in the condition 1
 %
