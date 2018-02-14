@@ -1,5 +1,5 @@
 
-function [log2FC,FDR] = DESeq2(matrix1,matrix2):
+function [log2FC,FDR,meanExp] = DESeq2(matrix1,matrix2):
 % matrix1: matrix where each line represent a sample in the condition 1
 % matrix2: matrix where each line represent a sample in the condition 1
 %
@@ -21,11 +21,21 @@ matrixN2 = bsxfun(@rdivide,matrix2',norm2')';
 disp('Log2FC(mean)...')
 mean1 = mean(matrixN1);
 mean2 = mean(matrixN2);
+meanExp = mean(cat(2,matrix1,matrix2))
 
 log2FC = log2(mean1./mean2)';
 
 disp('Differential Analysis ...')
 tLocal = nbintest(matrix1',matrix2','VarianceLink','LocalRegression','SizeFactor',{norm1',norm2'});
 FDR = mafdr(tLocal_ij.pValue,'BHFDR',true);
+
+
+figure;
+scatter(meanExp(FDR<0.1),log2FC(FDR<0.1),2,'r','filled');
+hold on;
+scatter(meanExp(FDR>=0.1),log2FC(FDR>=0.1),2,'k','filled')
+set(gca, 'XScale', 'log')
+xtitle('Mean expression')
+ytitle('Log2 fold change')
 
 end
